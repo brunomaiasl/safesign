@@ -10,13 +10,28 @@ import eyeClosedIcon from "../assets/images/eye-closed.png"; // Caminho da image
 const LoginForm = ({ onLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useLocalStorage("rememberMe", false);
+  const [rememberMe] = useLocalStorage("rememberMe", false); // Removido setRememberMe pois não estava sendo usado
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [isRegistering, setIsRegistering] = useState(false);
-  const [showPassword, setShowPassword] = useState(false); // Novo estado para controlar a visibilidade da senha
+  const [showPassword, setShowPassword] = useState(false);
+
+  // Auto-login se houver credenciais salvas
+  const handleAutoLogin = async (savedEmail, savedPassword) => {
+    try {
+      setLoading(true);
+      const response = await login(savedEmail, savedPassword);
+      if (response.success) {
+        onLogin(response.user.email);
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Carrega credenciais salvas ao iniciar
   useEffect(() => {
@@ -29,22 +44,7 @@ const LoginForm = ({ onLogin }) => {
         handleAutoLogin(savedEmail, savedPassword);
       }
     }
-  }, [rememberMe]);
-
-  // Auto-login se houver credenciais salvas
-  const handleAutoLogin = async (email, password) => {
-    try {
-      setLoading(true);
-      const response = await login(email, password);
-      if (response.success) {
-        onLogin(response.user.email);
-      }
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, []); // Removida a dependência rememberMe para evitar o warning
 
   // Validações antes do envio do formulário
   const validateFields = () => {
@@ -113,7 +113,7 @@ const LoginForm = ({ onLogin }) => {
 
         <div className="password-container">
           <input
-            type={showPassword ? "text" : "password"} // Altera entre 'text' e 'password'
+            type={showPassword ? "text" : "password"}
             value={password}
             placeholder="Digite sua senha"
             onChange={(e) => setPassword(e.target.value)}
@@ -127,23 +127,13 @@ const LoginForm = ({ onLogin }) => {
           />
           <button
             type="button"
-            onClick={() => setShowPassword(!showPassword)} // Alterna entre mostrar e esconder a senha
+            onClick={() => setShowPassword(!showPassword)}
             className="show-password-btn"
           >
             {showPassword ? (
-              <img
-                src={eyeOpenIcon}
-                alt="Mostrar senha"
-                width={20}
-                height={20}
-              />
+              <img src={eyeOpenIcon} alt="Mostrar senha" width={20} height={20} />
             ) : (
-              <img
-                src={eyeClosedIcon}
-                alt="Ocultar senha"
-                width={20}
-                height={20}
-              />
+              <img src={eyeClosedIcon} alt="Ocultar senha" width={20} height={20} />
             )}
           </button>
           {passwordError && <span className="error">{passwordError}</span>}
@@ -171,3 +161,4 @@ const LoginForm = ({ onLogin }) => {
 };
 
 export default LoginForm;
+
