@@ -50,16 +50,25 @@ const LoginForm = ({ onLogin }) => {
     }
   }, [successMessage]);
 
-  // Adicionando o useEffect para remover a div.glasp-extension
+  // Adicionando o useEffect para remover ou esconder a div.glasp-extension-toaster
   useEffect(() => {
-    const removeGlaspExtension = () => {
+    const removeAndHideGlaspElements = () => {
+      // Remover a extensão Glasp
       const glaspExtension = document.querySelector(".glasp-extension");
       if (glaspExtension) {
         glaspExtension.remove();
       }
+
+      // Remover ou esconder a div.glasp-extension-toaster
+      const glaspToaster = document.querySelector(".glasp-extension-toaster");
+      if (glaspToaster) {
+        glaspToaster.remove();  // Remover a div
+        // Ou, se preferir esconder em vez de remover:
+        // glaspToaster.style.display = "none";
+      }
     };
 
-    removeGlaspExtension();
+    removeAndHideGlaspElements();
   }, []);
 
   const validateFields = () => {
