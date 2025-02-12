@@ -13,6 +13,7 @@ const LoginForm = ({ onLogin }) => {
   const [passwordError, setPasswordError] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const [isRegistering, setIsRegistering] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -42,6 +43,13 @@ const LoginForm = ({ onLogin }) => {
     }
   }, [handleAutoLogin, rememberMe]);
 
+  useEffect(() => {
+    if (successMessage) {
+      const timer = setTimeout(() => setSuccessMessage(""), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [successMessage]);
+
   const validateFields = () => {
     const isEmailValid = validateEmail(email);
     const isPasswordValid = validatePassword(password);
@@ -61,6 +69,7 @@ const LoginForm = ({ onLogin }) => {
       setLoading(true);
       if (isRegistering) {
         await register(email, password);
+        setSuccessMessage("Usuário cadastrado com sucesso! Faça login.");
         setIsRegistering(false);
       } else {
         const response = await login(email, password);
@@ -88,6 +97,8 @@ const LoginForm = ({ onLogin }) => {
     <div className="form-container">
       <form onSubmit={handleSubmit} className="login-form">
         <h3>{isRegistering ? "Cadastrar Novo Usuário" : "Login"}</h3>
+
+        {successMessage && <div className="success-message">{successMessage}</div>}
 
         <div>
           <input
@@ -136,5 +147,6 @@ const LoginForm = ({ onLogin }) => {
 };
 
 export default LoginForm;
+
 
 

@@ -10,6 +10,7 @@
 
 body {
   padding: 25px;
+  background: linear-gradient(135deg, #3b3f55, #4A5568);
 }
 
 .login-form{
@@ -213,6 +214,13 @@ input[type="password"] {
 .show-password-btn img {
   width: 20px;
   height: 20px;
+}
+
+.success-message {
+  color: #69f069;
+  padding: 10px;
+  text-align: center;
+  margin-bottom: 10px;
 }
 
 
