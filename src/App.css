@@ -182,12 +182,39 @@ p{
   background:#3b5583;
 }
 
-.success-message {
-  color: rgb(195, 238, 195);
-  font-size: 16px;
-  font-weight: bold;
-  margin-top: 10px;
+.password-container {
+  position: relative;
 }
+
+input[type="password"] {
+  width: 100%;
+  padding-right: 30px; /* Espaço para o ícone */
+}
+
+.show-password-btn {
+  position: absolute;
+  right: -55px; /* Posiciona o botão à direita dentro do input */
+  top: -23%;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.show-password-btn img{
+  background: white
+}
+
+.show-password-btn:hover{
+  transform: scale(1.1);
+  background: none;
+}
+
+
+.show-password-btn img {
+  width: 20px;
+  height: 20px;
+}
+
 
 @media screen and (max-width: 392px) {
   h1 {

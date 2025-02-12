@@ -3,6 +3,10 @@ import useLocalStorage from "../hooks/useLocalStorage"; // Hook para salvar no l
 import { validateEmail, validatePassword } from "../utils/validation";
 import { login, register } from "../api/auth"; // Simulação da API de autenticação
 
+// Importe as imagens para os ícones
+import eyeOpenIcon from "../assets/images/eye-open.png"; // Caminho da imagem de olho aberto
+import eyeClosedIcon from "../assets/images/eye-closed.png"; // Caminho da imagem de olho fechado
+
 const LoginForm = ({ onLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -12,7 +16,7 @@ const LoginForm = ({ onLogin }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [isRegistering, setIsRegistering] = useState(false);
-  const [successMessage, setSuccessMessage] = useState(""); // Novo estado para a mensagem de sucesso
+  const [showPassword, setShowPassword] = useState(false); // Novo estado para controlar a visibilidade da senha
 
   // Carrega credenciais salvas ao iniciar
   useEffect(() => {
@@ -66,7 +70,6 @@ const LoginForm = ({ onLogin }) => {
       setLoading(true);
       if (isRegistering) {
         await register(email, password);
-        setSuccessMessage("Cadastro realizado com sucesso!"); // Exibe a mensagem de sucesso
         setIsRegistering(false); // Retorna para a tela de login após cadastrar
       } else {
         const response = await login(email, password);
@@ -102,19 +105,15 @@ const LoginForm = ({ onLogin }) => {
             placeholder="Digite seu email"
             onChange={(e) => setEmail(e.target.value)}
             onBlur={() =>
-              setEmailError(
-                validateEmail(email)
-                  ? ""
-                  : "Por favor, insira um e-mail válido."
-              )
+              setEmailError(validateEmail(email) ? "" : "Por favor, insira um e-mail válido.")
             }
           />
           {emailError && <span className="error">{emailError}</span>}
         </div>
 
-        <div>
+        <div className="password-container">
           <input
-            type="password"
+            type={showPassword ? "text" : "password"} // Altera entre 'text' e 'password'
             value={password}
             placeholder="Digite sua senha"
             onChange={(e) => setPassword(e.target.value)}
@@ -126,6 +125,27 @@ const LoginForm = ({ onLogin }) => {
               )
             }
           />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)} // Alterna entre mostrar e esconder a senha
+            className="show-password-btn"
+          >
+            {showPassword ? (
+              <img
+                src={eyeOpenIcon}
+                alt="Mostrar senha"
+                width={20}
+                height={20}
+              />
+            ) : (
+              <img
+                src={eyeClosedIcon}
+                alt="Ocultar senha"
+                width={20}
+                height={20}
+              />
+            )}
+          </button>
           {passwordError && <span className="error">{passwordError}</span>}
         </div>
 
@@ -137,7 +157,7 @@ const LoginForm = ({ onLogin }) => {
 
         <p>
           {isRegistering ? "Já tem uma conta?" : "Não tem uma conta?"}{" "}
-          <button
+          <button 
             type="button"
             onClick={() => setIsRegistering(!isRegistering)}
             className="toggle-button"
@@ -146,9 +166,6 @@ const LoginForm = ({ onLogin }) => {
           </button>
         </p>
       </form>
-
-      {/* Exibe a mensagem de sucesso após o cadastro */}
-      {successMessage && <p className="success-message">{successMessage}</p>}
     </div>
   );
 };
