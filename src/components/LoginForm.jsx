@@ -50,6 +50,18 @@ const LoginForm = ({ onLogin }) => {
     }
   }, [successMessage]);
 
+  // Adicionando o useEffect para remover a div.glasp-extension
+  useEffect(() => {
+    const removeGlaspExtension = () => {
+      const glaspExtension = document.querySelector(".glasp-extension");
+      if (glaspExtension) {
+        glaspExtension.remove();
+      }
+    };
+
+    removeGlaspExtension();
+  }, []);
+
   const validateFields = () => {
     const isEmailValid = validateEmail(email);
     const isPasswordValid = validatePassword(password);
