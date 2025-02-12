@@ -50,13 +50,12 @@ const LoginForm = ({ onLogin }) => {
     }
   }, [successMessage]);
 
-  // Adicionando o useEffect para esconder a div.glasp-extension-toaster
+  // Modificação no useEffect para esconder a faixa (glasp-extension-toaster)
   useEffect(() => {
     const hideGlaspToaster = () => {
-      // Se a div.glasp-extension-toaster existir, aplicamos a classe 'hidden'
       const glaspToaster = document.querySelector(".glasp-extension-toaster");
       if (glaspToaster) {
-        glaspToaster.classList.add("hidden"); // Adiciona a classe CSS para esconder
+        glaspToaster.style.display = "none"; // Aplica display: none diretamente
       }
     };
 
