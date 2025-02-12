@@ -223,6 +223,10 @@ input[type="password"] {
   margin-bottom: 10px;
 }
 
+.hidden {
+  display: none !important;
+}
+
 
 @media screen and (max-width: 392px) {
   h1 {

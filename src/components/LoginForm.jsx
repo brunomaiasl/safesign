@@ -50,25 +50,17 @@ const LoginForm = ({ onLogin }) => {
     }
   }, [successMessage]);
 
-  // Adicionando o useEffect para remover ou esconder a div.glasp-extension-toaster
+  // Adicionando o useEffect para esconder a div.glasp-extension-toaster
   useEffect(() => {
-    const removeAndHideGlaspElements = () => {
-      // Remover a extensão Glasp
-      const glaspExtension = document.querySelector(".glasp-extension");
-      if (glaspExtension) {
-        glaspExtension.remove();
-      }
-
-      // Remover ou esconder a div.glasp-extension-toaster
+    const hideGlaspToaster = () => {
+      // Se a div.glasp-extension-toaster existir, aplicamos a classe 'hidden'
       const glaspToaster = document.querySelector(".glasp-extension-toaster");
       if (glaspToaster) {
-        glaspToaster.remove();  // Remover a div
-        // Ou, se preferir esconder em vez de remover:
-        // glaspToaster.style.display = "none";
+        glaspToaster.classList.add("hidden"); // Adiciona a classe CSS para esconder
       }
     };
 
-    removeAndHideGlaspElements();
+    hideGlaspToaster();
   }, []);
 
   const validateFields = () => {
@@ -168,6 +160,5 @@ const LoginForm = ({ onLogin }) => {
 };
 
 export default LoginForm;
-
 
 
